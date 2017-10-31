@@ -6,12 +6,13 @@ import Message from './Message.jsx';
 
 class App extends Component {
   render() {
+    console.log("Rendering <App/>")
     return (
       <div>
-      <ChatBar />
       <MessageList>
-      <Message />
       </MessageList>
+      <Message />
+      <ChatBar />
       </div>
     );
   }

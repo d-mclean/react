@@ -20,14 +20,15 @@ class Message extends Component {
     }
 
     render(){
+        console.log("Rendering <Message/>")
         //const messages = this.state.message;
         return (
             <div className="message">
                 <span className="message-username">
-                {this.props.message.username}
+                Anonymous1
                 </span>
                 <span className="message-content">
-                {this.props.message.content}
+                I won't be impressed with technology until I can download food.
                 </span>
             </div>  
         );
