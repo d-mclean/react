@@ -7,20 +7,23 @@ class ChatBar extends Component {
         return (
             <footer className="chatbar">
                 <input className="chatbar-username" placeholder="Your Name (Optional)" value={this.props.currentUser}/>
-                <input className="chatbar-message" name="content" placeholder="Type a message and hit ENTER" onChange={this.onFieldChange.bind(this)} onKeyUp={this.onKeyUp.bind(this)}/>
+                <input className="chatbar-message" name="content" placeholder="Type a message and hit ENTER" onChange={this.onFieldChange.bind(this)} onKeyUp={this.onMessageSend.bind(this)}/>
             </footer>
         )
     }
 
     onFieldChange(event){
-        const fieldName = event.target.name;
-        const fieldValue = event.target.value;
-        this.props.onChange(fieldName, fieldValue);
+        // const fieldName = event.target.name;
+        // const fieldValue = event.target.value;
+        // this.props.onChange(fieldName, fieldValue);
+            console.log("onchangeded");
     }
 
-    onKeyUp(event){
+    onMessageSend(event){
         if (event.keyCode === 13){
-            console.log("entereded");
+            const fieldName = event.target.name;
+            const fieldValue = event.target.value;
+            this.props.onKeyUp(fieldName, fieldValue);
         }
     }
 
@@ -29,7 +32,8 @@ class ChatBar extends Component {
 ChatBar.propTypes = {
     currentUser: PropTypes.string,
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onKeyUp: PropTypes.func
 }
 
 export default ChatBar;

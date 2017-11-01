@@ -47,19 +47,23 @@ class App extends Component {
     return (
       <div>
       <MessageList messages={this.state.messages}/>
-      <ChatBar currentUser={this.state.currentUser.name} onChange={this.onChange.bind(this)} onKeyup={this.onKeyup.bind(this)}/>
+      <ChatBar currentUser={this.state.currentUser.name} onChange={this.onChange.bind(this)} onKeyUp={this.onKeyUp.bind(this)}/>
       </div>
     );
   }
 
   onChange(field, value){
+	//   const newMessage = {uuid: uuidv4(), username: this.state.currentUser.name, [field]: value};
+	//   const messages = this.state.messages.concat(newMessage);
+	//   this.setState({messages: messages});
+	console.log("onchangeded")
+  }
+
+  onKeyUp(field, value){
+	  //this.setState({currentUser: value})
 	  const newMessage = {uuid: uuidv4(), username: this.state.currentUser.name, [field]: value};
 	  const messages = this.state.messages.concat(newMessage);
 	  this.setState({messages: messages});
-  }
-
-  onKeyup(field, value){
-	  this.setState({currentUser: value})
   }
 }
 
