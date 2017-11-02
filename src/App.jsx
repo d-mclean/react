@@ -11,43 +11,66 @@ class App extends Component {
   constructor(props){
     super(props);
 
-    this.state = {
-        currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+    this.state = { database: {
+        currentUser: {name: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
         messages: [
-          {
-			uuid: uuidv4(),
-            username: "Bob",
-            content: "Has anyone seen my marbles?",
-          },
-          {
-			uuid: uuidv4(),
-            username: "Anonymous",
-            content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        	}
-        	]
-      	};
+        //   {
+		// 	uuid: uuidv4(),
+        //     username: "Bob",
+        //     content: "Has anyone seen my marbles?",
+        //   },
+        //   {
+		// 	uuid: uuidv4(),
+        //     username: "Anonymous",
+        //     content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+        // 	}
+			]
+      	}, currentUser: "",
+		userSocket: ""};
 	}
 
 	// in App.jsx
 	componentDidMount() {
 		console.log("componentDidMount <App />");
-		setTimeout(() => {
-		console.log("Simulating incoming message");
-		// Add a new message to the list of messages in the data store
-		const newMessage = {uuid: uuidv4(), username: "Michelle", content: "Hello there!"};
-		const messages = this.state.messages.concat(newMessage)
-		// Update the state of the app component.
-		// Calling setState will trigger a call to render() in App and all child components.
-		this.setState({messages: messages})
-		}, 3000);
+
+		// Create a new WebSocket and save it in the App state.
+		let newSocket = new WebSocket("ws://localhost:3001");
+		newSocket.onopen = function (event) {
+			console.log("Connected to server.");
+			//sendText(newSocket);
+  		};
+		
+		this.setState({userSocket: newSocket});
+
+		// On receiving a message, at to state so the interface refreshes.
+		newSocket.onmessage = (event) => {
+			let objMessage = JSON.parse(event.data);
+
+			switch(objMessage.type){
+				case "incomingMessage":
+
+				break;
+				case "incomingNotification":
+
+				break;
+
+				default:
+
+				throw new Error("unknown even type" + objMessage.type);
+
+			}
+			this.state.database.messages.push(objMessage);
+			this.setState({database: this.state.database});
+		  };
 	}
 
   render() {
-    console.log("Rendering <App/>")
+	console.log("Rendering <App/>");
+	let data = this.state.database.messages;
     return (
       <div>
-      <MessageList messages={this.state.messages}/>
-      <ChatBar currentUser={this.state.currentUser.name} onChange={this.onChange.bind(this)} onKeyUp={this.onKeyUp.bind(this)}/>
+      <MessageList messages={data}/>
+      <ChatBar currentUser={this.state.currentUser} onChange={this.onChange.bind(this)} onKeyUp={this.onKeyUp.bind(this)}/>
       </div>
     );
   }
@@ -56,20 +79,51 @@ class App extends Component {
 	//   const newMessage = {uuid: uuidv4(), username: this.state.currentUser.name, [field]: value};
 	//   const messages = this.state.messages.concat(newMessage);
 	//   this.setState({messages: messages});
-	console.log("onchangeded")
+
+	this.setState({currentUser: value})
   }
 
   onKeyUp(field, value){
 	  //this.setState({currentUser: value})
-	  const newMessage = {uuid: uuidv4(), username: this.state.currentUser.name, [field]: value};
-	  const messages = this.state.messages.concat(newMessage);
-	  this.setState({messages: messages});
+	  const newMessage = {type: "incomingMessage", uuid: uuidv4(), username: this.state.currentUser, [field]: value};
+	  //console.log(newMessage);
+	  
+	  // ADD NEW MESSAGE TO STATE??
+	 //const messages = this.state.database.messages.concat(newMessage);
+	//const messages = this.state.database.messages.push(newMessage)
+	  //this.setState({database: {messages: messages}});
+
+	  sendText(this.state.userSocket, newMessage);
+  }
+
+  onKeyUp2(field, value){
+	  //this.setState({database: {field: value}});
+	  console.log(this.state.database.currentUser.name)
   }
 }
 
 App.propTypes = {
     currentUser: PropTypes.string,
-    value: PropTypes.string
+	value: PropTypes.string,
+	messages: PropTypes.object
 }
+
+// Send text to all users through the server
+function sendText(ns, nm) {
+	// Construct a msg object containing the data the server needs to process the message from the chat client.
+	// var msg = {
+	//   type: "message",
+	//   text: "ABCD",
+	//   id:   "1",
+	//   date: Date.now()
+	// };
+  
+	// Send the msg object as a JSON-formatted string.
+	//ns.send(JSON.stringify(msg));
+	ns.send(JSON.stringify(nm));
+	
+	// Blank the text input element, ready to receive the next line of text from the user.
+	//document.getElementById("text").value = "";
+  }
 
 export default App;

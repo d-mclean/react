@@ -11,6 +11,10 @@ class MessageList extends Component {
             { this.props.messages.map((message) => {
                 return (<Message message={message.content} username={message.username} key={message.uuid}/>)
             })}
+            {/* {this.props.database.messages.forEach(function(message){
+                return (<Message message={message.content} username={message.username} key={message.uuid}/>)
+             } )} */}
+
                 <Message />
             </main>
             </div>
@@ -20,6 +24,7 @@ class MessageList extends Component {
 }
 
 MessageList.propTypes = {
+    database: PropTypes.object,
     messages: PropTypes.array,
     uuid: PropTypes.string,
     username: PropTypes.string,
