@@ -1,21 +1,12 @@
-React Boilerplate
+Chatty Appy
 =====================
 
-A minimal and light dev environment for ReactJS.
+A simple single-page chat app that uses WebSockets and React.
+
+Note: this app requires a server component which can be found here:
+https://github.com/d-mclean/chatty_server
 
 ### Usage
-
-Clone the boilerplate and create your own git repo.
-
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
 
 ```
 npm install
@@ -40,6 +31,7 @@ npm run lint
 ### Dependencies
 
 * React
+* React-Tooptip (https://www.npmjs.com/package/react-tooltip)
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
