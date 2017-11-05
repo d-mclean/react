@@ -71,6 +71,7 @@ body {
 .navbar {
   background: tomato;
   border-bottom: 1px solid black;
+  display:flex;
   height: 60px;
   left: 0;
   padding: 0 10px;
@@ -81,7 +82,9 @@ body {
 
 .navbar-brand {
   color: inherit;
-  display: block;
+  //display: block;
+  display:flex;
+  flex: 6;
   float: left;
   font-weight: 700;
   font-size: 28px;
@@ -89,4 +92,15 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.navbar-counter {
+  display:flex;
+  flex:1;
+  float: left;
+  font-weight: 700;
+  font-size: 14px;
+  height: 40px;
+  text-decoration: none;
+  padding: 20px 0px 0px 0px;
 }

@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+const uuidv4 = require('uuid/v4');
+
+// Set a global variable for the default username for new users.
+let gOldUserName = 'Anonymous';
+const debugON = false;
+
 class ChatBar extends Component {
     render(){
-        console.log("Rendering <ChatBar/>")
+        consoleNotification("Rendering <ChatBar/>");
         return (
             <footer className="chatbar">
                 <input className="chatbar-username" name="username" placeholder="Your Name (Optional)" onChange={this.onFieldChange.bind(this)} onKeyUp={this.onNameChange.bind(this)} />
@@ -16,7 +22,6 @@ class ChatBar extends Component {
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
         this.props.onChange(fieldName, fieldValue);
-        //console.log("yyy");
     }
 
     onMessageSend(event){
@@ -24,16 +29,25 @@ class ChatBar extends Component {
             const fieldName = event.target.name;
             const fieldValue = event.target.value;
             this.props.onKeyUp(fieldName, fieldValue);
+
+            document.querySelector('.chatbar-message').value = '';
         }
     }
 
+    // If the user hits enter, verify it's a new name then send a notification to the server.
     onNameChange(event){
         if (event.keyCode === 13){
-            const fieldName = event.target.name;
+            //const fieldName = event.target.name;
             const fieldValue = event.target.value;
-            //this.props.onChange(fieldName, fieldValue);
-            //this.setState({database:{currentUser: {name: field}}})
-            this.setState({fieldName: fieldValue});
+            if (gOldUserName !== fieldValue) {
+                this.setState({fieldName: fieldValue});
+                const newMessage = {type: 'notification', uuid: uuidv4(), username: gOldUserName, newName: fieldValue, userList: []};
+                
+                sendText(this.props.userSocket, newMessage);
+
+                // Update global name to track change.
+                gOldUserName = fieldValue;
+            }
         }
     }
 
@@ -41,11 +55,24 @@ class ChatBar extends Component {
 
 ChatBar.propTypes = {
     currentUser: PropTypes.string,
+    userSocket: PropTypes.instanceOf(WebSocket),
     value: PropTypes.string,
     onChange: PropTypes.func,
     onKeyUp: PropTypes.func,
-    onKeyUp2: PropTypes.func,
-    userSocket: PropTypes.instanceOf(WebSocket)
+    onKeyUp2: PropTypes.func
+}
+
+// Send text to all users through the server
+function sendText(ns, nm) {
+	// Send the msg object as a JSON-formatted string.
+	ns.send(JSON.stringify(nm));
+  }
+
+// This function displays the console notifications if debugging is turned on.
+function consoleNotification(strMsg){
+	if (debugON){
+		console.log(strMsg);
+	}
 }
 
 export default ChatBar;
