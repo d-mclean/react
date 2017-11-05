@@ -3,16 +3,24 @@ Chatty Appy
 
 A simple single-page chat app that uses WebSockets and React.
 
-Note: this app requires a server component which can be found here:
+**Note**: this app requires a server component which can be found here:
 https://github.com/d-mclean/chatty_server
 
 ### Usage
 
+Client-side:
 ```
 npm install
 npm start
 open http://localhost:3000
 ```
+
+Server-side:
+```
+npm install
+npm start
+```
+
 
 ### Static Files
 
