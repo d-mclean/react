@@ -21,7 +21,6 @@ npm install
 npm start
 ```
 
-
 ### Static Files
 
 You can store static files like images, fonts, etc in the `build` folder.
@@ -43,3 +42,14 @@ npm run lint
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+
+
+## Screenshots
+Chat with multiple users in a simple to use interface!
+!["Screenshot of chatty home page"](https://github.com/d-mclean/react/blob/master/docs/chatroom.png)
+
+Customize your name and chat with other users!
+!["Screenshot of multiple users at the same time"](https://github.com/d-mclean/react/blob/master/docs/messagesandnamechange.png)
+
+See who else is online!
+!["Screenshot of the online user list"](https://github.com/d-mclean/react/blob/master/docs/usersonlinelist.png)
